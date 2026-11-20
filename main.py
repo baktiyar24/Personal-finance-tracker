@@ -1,47 +1,8 @@
-import json
-from transactions import add_expense, add_income
-
-def add_transactions(transactions, type, amount):
-    if type == "income" and str(amount).isdigit() and int(amount) > 0:
-        transactions.append({"type": type, 'amount': amount})
-        return transactions
-    elif type == "outcome" and str(amount).isdigit() and int(amount) > 0:
-        transactions.append({"type": type, 'amount': amount})
-        return transactions
-    else:
-        print("Invalid!")
-        return transactions
-
-def show_transactions(transactions):
-    if not transactions:
-        print("No transactions yet.")
-        return
-    print("Your transactions:")
-    for number, transaction in enumerate(transactions, start=1):
-        print(f"{number}. {transaction["type"].capitalize()}: {transaction["amount"]}")
-
-def save_transactions(transactions):
-    with open("transactions.json", "w") as file:
-        json.dump(transactions, file)
-
-def calculate_balance(transactions):
-    balance = 0
-    for transaction in transactions:
-        if transaction["type"] == "income":
-            balance += int(transaction["amount"])
-        else:
-            balance -= int(transaction["amount"])
-    return balance
+from transactions import add_expense, add_income, add_transactions, show_transactions, calculate_balance
+from storage import save_transactions, load_transactions
 
 def main():
-    try:
-        with open("transactions.json", "r") as file:
-            transactions = json.load(file)
-    except FileNotFoundError:
-        transactions = []
-    except json.JSONDecodeError:
-        transactions = []
-
+    transactions = load_transactions()
     balance = calculate_balance(transactions)
 
     while True:
