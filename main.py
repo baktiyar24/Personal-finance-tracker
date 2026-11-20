@@ -1,3 +1,5 @@
+import json
+
 def add_income(balance, income):
     if income.isdigit():
         int_income = int(income)
@@ -45,10 +47,29 @@ def show_transactions(transactions):
     print("Your transactions:")
     for number, transaction in enumerate(transactions, start=1):
         print(f"{number}. {transaction["type"].capitalize()}: {transaction["amount"]}")
-            
-def main():
+
+def save_transactions(transactions):
+    with open("transactions.json", "w") as file:
+        json.dump(transactions, file)
+
+def calculate_balance(transactions):
     balance = 0
-    transactions = []
+    for transaction in transactions:
+        if transaction["type"] == "income":
+            balance += int(transaction["amount"])
+        else:
+            balance -= int(transaction["amount"])
+    return balance
+
+def main():
+    try:
+        with open("transactions.json", "r") as file:
+            transactions = json.load(file)
+    except FileNotFoundError:
+        transactions = []
+
+    balance = calculate_balance(transactions)
+
     while True:
         cmd = input()
         if cmd == "1":
@@ -57,6 +78,7 @@ def main():
             balance = add_income(balance, income)
             if old_balance < balance:
                 add_transactions(transactions, "income", income)
+                save_transactions(transactions)
             print(balance)
         elif cmd == "2":
             outcome = input("Add expense: ")
@@ -64,6 +86,7 @@ def main():
             balance = add_expense(balance, outcome)
             if old_balance > balance:
                 add_transactions(transactions, "outcome", outcome)
+                save_transactions(transactions)
             print(balance)
 
         elif cmd == "3":
