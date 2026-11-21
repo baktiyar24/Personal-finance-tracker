@@ -1,11 +1,6 @@
 def add_income(balance, income):
-    if income.isdigit():
-        int_income = int(income)
-    else:
-        print(f"Please enter the positive number! Thanks.")
-        return balance
-    if income.isdigit() and int_income > 0:
-        balance += int_income
+    if income > 0:
+        balance += income
         print("Added.")
         return balance
     else:
@@ -13,14 +8,8 @@ def add_income(balance, income):
         return balance
 
 def add_expense(balance, outcome):
-    if outcome.isdigit():
-        int_outcome = int(outcome)
-    else:
-        print(f"Invalid amout!")
-        return balance
-
-    if int_outcome <= balance and int_outcome > 0:
-        balance -= int(outcome)
+    if outcome <= balance and outcome > 0:
+        balance -= outcome
         print("The money has been deducted.")
         return balance
     else:

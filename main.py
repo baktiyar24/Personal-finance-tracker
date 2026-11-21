@@ -10,7 +10,11 @@ def main():
         if cmd == "1":
             income = input("Add income: ")
             old_balance = balance
-            balance = add_income(balance, income)
+            if income.isdigit() and int(income) > 0:
+                income = int(income)
+                balance = add_income(balance, income)
+            else:
+                print(f"Please enter positive number. Thanks!")
             if old_balance < balance:
                 add_transactions(transactions, "income", income)
                 save_transactions(transactions)
@@ -18,7 +22,11 @@ def main():
         elif cmd == "2":
             outcome = input("Add expense: ")
             old_balance = balance
-            balance = add_expense(balance, outcome)
+            if outcome.isdigit() and int(outcome) > 0:
+                outcome = int(outcome)
+                balance = add_expense(balance, outcome)
+            else:
+                print(f"Please enter positive number. Thanks!")
             if old_balance > balance:
                 add_transactions(transactions, "outcome", outcome)
                 save_transactions(transactions)
