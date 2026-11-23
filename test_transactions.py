@@ -1,5 +1,8 @@
 from transactions import add_income, add_expense
+from fastapi.testclient import TestClient
+from api_practice.app import app
 
+client = TestClient(app)
 def test_income_increase_balance():
     assert add_income(500, 200) == 700
 
